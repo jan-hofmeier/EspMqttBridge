@@ -16,7 +16,7 @@ public class Service implements Daemon {
 	@Override
 	public void init(DaemonContext context) throws DaemonInitException, Exception {
 		String[] args = context.getArguments();
-		String configDir = args.length == 0 ? "config" : args[0];
+		String configDir = args.length == 0 ? "/etc/espreceiver" : args[0];
 		mqttPublisher = new MqttPublisher(configDir);
 		espReceiver = new EspReceiver(new ReceiverCallBack() {
 			
