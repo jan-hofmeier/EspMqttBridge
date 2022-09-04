@@ -1,7 +1,5 @@
 package de.recondita.espmqttbridge;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +12,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MqttPublisher implements Closeable {
+public class MqttPublisher implements AutoCloseable {
 
 	private final static Logger LOGGER = Logger.getLogger(MqttClient.class.getName());
 	private MqttClient mqttClient;
@@ -58,9 +56,12 @@ public class MqttPublisher implements Closeable {
 	}
 
 	@Override
-	public void close() throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void close() {
+		try {
+			mqttClient.close(true);
+		} catch (MqttException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
