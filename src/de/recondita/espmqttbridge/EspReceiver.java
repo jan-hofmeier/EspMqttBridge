@@ -20,11 +20,11 @@ public class EspReceiver implements AutoCloseable{
 
 	private ExecutorService executorService = Executors.newWorkStealingPool(2);
 
-	private TempratureCallBack callback;
+	private ReceiverCallBack callback;
 	
 	private Timer timeoutTimer;
 
-	public EspReceiver(TempratureCallBack callback) throws IOException {
+	public EspReceiver(ReceiverCallBack callback) throws IOException {
 		this.callback = callback;
 		serverSocket = new ServerSocket(50000);
 	}
@@ -97,7 +97,7 @@ public class EspReceiver implements AutoCloseable{
 		}
 	}
 	
-	public interface TempratureCallBack{
+	public interface ReceiverCallBack{
 		public void updateTemp(String room, float temp);
 		public void updateHumidity(String room, float temp);
 	}

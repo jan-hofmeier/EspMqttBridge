@@ -51,8 +51,18 @@ public class MqttPublisher implements AutoCloseable {
 		mqttClient.connect(conOpt);
 	}
 	
+	
+	private void publishClimate(String room, String type, float value) throws MqttPersistenceException, MqttException {
+		String topic = "climate/og/" + room + "/" + type;
+		mqttClient.publish(topic, String.valueOf(value).getBytes(), 0, true);
+	}
+	
 	public void publishTemprature(String sensor, float temprature) throws MqttPersistenceException, MqttException {
-		mqttClient.publish(sensor, String.valueOf(temprature).getBytes(), 0, true);
+		publishClimate(sensor, "temp", temprature);
+	}
+	
+	public void publishHumidity(String sensor, float humidity) throws MqttPersistenceException, MqttException {
+		publishClimate(sensor, "hum", humidity);
 	}
 
 	@Override
