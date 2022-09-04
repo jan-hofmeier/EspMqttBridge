@@ -99,7 +99,7 @@ public class EspReceiver implements AutoCloseable{
 	
 	public interface ReceiverCallBack{
 		public void updateTemp(String room, float temp);
-		public void updateHumidity(String room, float temp);
+		public void updateHumidity(String room, float hum);
 	}
 
 	@Override

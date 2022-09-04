@@ -1,5 +1,9 @@
 package de.recondita.espmqttbridge;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +21,12 @@ public class MqttPublisher implements AutoCloseable {
 	private final static Logger LOGGER = Logger.getLogger(MqttClient.class.getName());
 	private MqttClient mqttClient;
 
+	
+	public MqttPublisher(String configDir) throws MqttException, IOException {
+		this(loadMQTTConfig(configDir));
+	}
+	
+	
 	public MqttPublisher(String[] config) throws MqttException {
 		mqttClient = new MqttClient(config[0], config[1], new MemoryPersistence());
 		mqttClient.setCallback(new MqttCallbackExtended() {
@@ -65,6 +75,22 @@ public class MqttPublisher implements AutoCloseable {
 		publishClimate(sensor, "hum", humidity);
 	}
 
+	
+	public static String[] loadMQTTConfig(String configDir) throws IOException {
+		String[] ret = null; // default config
+		File mqttfile = new File(configDir + File.separator + "mqtt-config.txt");
+		if (mqttfile.exists()) {
+			LOGGER.info("Found MQTT config: " + mqttfile);
+			try (BufferedReader br = new BufferedReader(new FileReader(mqttfile))) {
+				ret = new String[3];
+				for (int i = 0; i < ret.length; i++) {
+					ret[i] = br.readLine();
+				}
+			}
+		}
+		return ret;
+	}
+	
 	@Override
 	public void close() {
 		try {
