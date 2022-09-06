@@ -26,10 +26,11 @@ public class EspReceiver implements AutoCloseable{
 
 	public EspReceiver(ReceiverCallBack callback) throws IOException {
 		this.callback = callback;
+		timeoutTimer = new Timer();
 		serverSocket = new ServerSocket(50000);
 	}
 
-	private void acceptLoop() {
+	public void acceptLoop() {
 		while (!serverSocket.isClosed()) {
 			try {
 				Socket socket = serverSocket.accept();
@@ -41,7 +42,6 @@ public class EspReceiver implements AutoCloseable{
 	}
 
 	public void startListener() {
-		timeoutTimer = new Timer();
 		new Thread(() -> acceptLoop()).start();
 	}
 
