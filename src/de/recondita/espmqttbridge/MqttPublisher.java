@@ -20,14 +20,15 @@ public class MqttPublisher implements AutoCloseable {
 
 	private final static Logger LOGGER = Logger.getLogger(MqttClient.class.getName());
 	private MqttClient mqttClient;
+	private String appartment;
 
 	
 	public MqttPublisher(String configDir) throws MqttException, IOException {
 		this(loadMQTTConfig(configDir));
 	}
 	
-	
 	public MqttPublisher(String[] config) throws MqttException {
+		appartment = config[3];
 		mqttClient = new MqttClient(config[0], config[1], new MemoryPersistence());
 		mqttClient.setCallback(new MqttCallbackExtended() {
 
@@ -63,7 +64,7 @@ public class MqttPublisher implements AutoCloseable {
 	
 	
 	private void publishClimate(String room, String type, float value) throws MqttPersistenceException, MqttException {
-		String topic = "climate/og/" + room + "/" + type;
+		String topic = "climate/" + appartment + "/" + room.toLowerCase() + "/" + type;
 		mqttClient.publish(topic, String.valueOf(value).getBytes(), 0, true);
 	}
 	
@@ -83,7 +84,7 @@ public class MqttPublisher implements AutoCloseable {
 		if (mqttfile.exists()) {
 			LOGGER.info("Found MQTT config: " + mqttfile);
 			try (BufferedReader br = new BufferedReader(new FileReader(mqttfile))) {
-				ret = new String[3];
+				ret = new String[4];
 				for (int i = 0; i < ret.length; i++) {
 					ret[i] = br.readLine();
 				}
