@@ -1,13 +1,15 @@
 package de.recondita.espmqttbridge;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import de.recondita.espmqttbridge.EspReceiver.ReceiverCallBack;
 
 public class Main {
-
+	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
+	
 	private static EspReceiver espReceiver;
 	private static MqttPublisher mqttPublisher;
 
@@ -39,6 +41,7 @@ public class Main {
 			}
 		});
 		
+		LOGGER.info("started");
 		espReceiver.acceptLoop();
 	}
 

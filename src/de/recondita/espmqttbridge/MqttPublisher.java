@@ -79,6 +79,7 @@ public class MqttPublisher implements AutoCloseable {
 	public static String[] loadMQTTConfig(String configDir) throws IOException {
 		String[] ret = null; // default config
 		File mqttfile = new File(configDir + File.separator + "mqtt-config.txt");
+		LOGGER.info("Try to use MQTT config: " + mqttfile);
 		if (mqttfile.exists()) {
 			LOGGER.info("Found MQTT config: " + mqttfile);
 			try (BufferedReader br = new BufferedReader(new FileReader(mqttfile))) {
@@ -87,6 +88,8 @@ public class MqttPublisher implements AutoCloseable {
 					ret[i] = br.readLine();
 				}
 			}
+		}else {
+			LOGGER.severe(mqttfile + " not found");
 		}
 		return ret;
 	}
