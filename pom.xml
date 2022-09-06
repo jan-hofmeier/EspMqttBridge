@@ -34,16 +34,9 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
-				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.recondita.espmqttbridge.Main.java</mainClass>
+							<mainClass>de.recondita.espmqttbridge.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
